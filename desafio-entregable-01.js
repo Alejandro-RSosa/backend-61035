@@ -22,7 +22,7 @@ class ProductManager {
         };
         const prod = this.#getProducts(code)
         if (prod){
-            return console.log(`this code ${code} already exists`)
+            return console.log(`Code ${code} already exists`)
         } else {
             this.products.push(product);
         }
@@ -62,4 +62,4 @@ productManager.addProduct('Cafe', 'Vicio', 90, 'https://www.fotos.com/Cafe.jpg',
 productManager.addProduct('Yerba', 'Vicio', 80, 'https://www.fotos.com/Yerba.jpg', 126, 100);
 console.log(productManager.getProducts())
 console.log(productManager.getProductById(1))
-console.log(productManager.getProductById(2))
+console.log(productManager.getProductById(3))
