@@ -1,0 +1,68 @@
+[
+  {
+    "id": "5051cf89-16c9-4c05-acb1-29a7876994a1",
+    "title": "Producto1",
+    "description": "Descripción1",
+    "price": 500,
+    "thumbnail": "https://www.example.com/productos.jpg",
+    "code": 200,
+    "stock": 2000,
+    "status": true,
+    "category": "CPU"
+  },
+  {
+    "id": "e68680ec-c457-445d-8961-2f08df171754",
+    "title": "Producto1",
+    "description": "Descripción1",
+    "price": 500,
+    "thumbnail": "https://www.example.com/productos.jpg",
+    "code": 201,
+    "stock": 2000,
+    "status": true,
+    "category": "CPU"
+  },
+  {
+    "id": "89b4704c-71dd-43ff-8fc6-5573ebdf52cb",
+    "title": "Producto1",
+    "description": "Descripción1",
+    "price": 500,
+    "thumbnail": "https://www.example.com/productos.jpg",
+    "code": 202,
+    "stock": 2000,
+    "status": true,
+    "category": "CPU"
+  },
+  {
+    "id": "f6597d59-19cc-4fe4-b259-eb043ffc3389",
+    "title": "Producto1",
+    "description": "Descripción1",
+    "price": 500,
+    "thumbnail": "https://www.example.com/productos.jpg",
+    "code": 203,
+    "stock": 2000,
+    "status": false,
+    "category": "CPU"
+  },
+  {
+    "id": "1d9980fb-e37f-4a0a-8914-1fa333cf3e62",
+    "title": "Producto1",
+    "description": "Descripción1",
+    "price": 500,
+    "thumbnail": "https://www.example.com/productos.jpg",
+    "code": 204,
+    "stock": 2000,
+    "status": true,
+    "category": "CPU"
+  },
+  {
+    "id": "3e4ef7be-780f-4175-bca1-dcfc025cf5b6",
+    "title": "Producto1",
+    "description": "Descripción1",
+    "price": 500,
+    "thumbnail": "https://www.example.com/productos.jpg",
+    "code": 205,
+    "stock": 2000,
+    "status": true,
+    "category": "CPU"
+  }
+]
