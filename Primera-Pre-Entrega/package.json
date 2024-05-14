@@ -2,9 +2,10 @@
   "name": "desafio-entregable-03",
   "version": "1.0.0",
   "type": "module",
-  "main": "./src/app.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon ."
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +13,8 @@
   "description": "",
   "dependencies": {
     "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
+    "socket.io": "^4.7.5",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
