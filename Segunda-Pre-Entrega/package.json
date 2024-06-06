@@ -1,0 +1,26 @@
+{
+  "name": "desafio-entregable-03",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
+    "mongoose": "^8.4.1",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.7.5",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.2"
+  }
+}
