@@ -21,9 +21,9 @@ export const getProductByStock = async (stock) => {
   }
 }
 
-export const getAll = async () => {
+export const getAll = async (page, limit, category, sort) => {
   try {
-    return await prodDao.getAll();
+    return await prodDao.getAll(page, limit, category, sort);
   } catch (error) {
     throw new Error(error);
   }

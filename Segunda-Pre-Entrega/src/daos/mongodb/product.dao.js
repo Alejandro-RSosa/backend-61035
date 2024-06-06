@@ -5,7 +5,7 @@ export default class ProductDaoMongoDB {
 
   async getProductByCategory(category) {
     try {
-      return await ProductModel.find({ category: category }).explain();
+      return await ProductModel.find({ category: category });
     } catch (error) {
       throw new Error(error);
     }
@@ -19,16 +19,17 @@ export default class ProductDaoMongoDB {
     }
   }
 
-  // Obtiene todos los productos o vacio
-  async getAll() {
+  async getAll(page=1, limit=10, category, sort) {
     try {
-      return await ProductModel.find({});
+      const filter = category ? { 'category': category } : {};
+      let sortOrder = {};
+      if(sort) sortOrder.price = sort ==='asc' ? 1 : sort === 'desc' ? -1 : null;
+      return await ProductModel.paginate(filter, {page, limit, sort: sortOrder});
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  // Obtiene producto por ID
   async getById(id) {
     try {
       return await ProductModel.findById(id);
@@ -37,7 +38,6 @@ export default class ProductDaoMongoDB {
     }
   }
 
-  // Crea un nuevo producto
   async create(obj) {
     try {
       return await ProductModel.create(obj);
@@ -46,7 +46,6 @@ export default class ProductDaoMongoDB {
     }
   }
 
-  // Actualiza un producto, se debe especificar los campos
   async update(id, obj) {
     try {
       return await ProductModel.findByIdAndUpdate(id, obj, { new: true });
@@ -55,7 +54,6 @@ export default class ProductDaoMongoDB {
     }
   }
 
-  // Elimina un producto por ID
   async delete(id) {
     try {
       return await ProductModel.findByIdAndDelete(id);
