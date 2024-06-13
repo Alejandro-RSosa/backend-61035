@@ -26,8 +26,12 @@ export const getAll = async (req, res, next) => {
   try {
     const { page, limit, category, sort } = req.query;
     const response = await service.getAll(page, limit, category, sort);
-    const prev = response.hasPrevPage ? `http://localhost:8080/products?page=${response.prevPage}` : null;
-    const next = response.hasNextPage ? `http://localhost:8080/products?page=${response.nextPage}` : null;
+    const prev = response.hasPrevPage
+      ? `http://localhost:8080/products?page=${response.prevPage}`
+      : null;
+    const next = response.hasNextPage
+      ? `http://localhost:8080/products?page=${response.nextPage}`
+      : null;
     res.json({
       payload: response.docs,
       info: {
@@ -36,7 +40,7 @@ export const getAll = async (req, res, next) => {
         nextLink: next,
         prevLink: prev,
         hasPrevPage: response.hasPrevPage,
-        hasNextPage: response.hasNextPage
+        hasNextPage: response.hasNextPage,
       },
     });
     res.status(200).json(response);
@@ -44,6 +48,37 @@ export const getAll = async (req, res, next) => {
     next(error.message);
   }
 };
+
+// export const getAll = async (req, res, next) => {
+//   try {
+//     const { page, limit, category, sort } = req.query;
+//     const response = await service.getAll(page, limit, category, sort);
+//     console.log(response);
+//     const prev = response.hasPrevPage
+//       ? `http://localhost:8080/products?page=${response.prevPage}`
+//       : null;
+//     const next = response.hasNextPage
+//       ? `http://localhost:8080/products?page=${response.nextPage}`
+//       : null;
+
+//     const data = {
+//       products: response.docs,
+//       info: {
+//         count: response.totalDocs,
+//         totalPages: response.totalPages,
+//         nextLink: next,
+//         prevLink: prev,
+//         hasPrevPage: response.hasPrevPage,
+//         hasNextPage: response.hasNextPage,
+//       },
+//       user: req.session.email,
+//     };
+
+//     res.status(200).render("products", data);
+//   } catch (error) {
+//     next(error.message);
+//   }
+// };
 
 export const getById = async (req, res, next) => {
   try {
