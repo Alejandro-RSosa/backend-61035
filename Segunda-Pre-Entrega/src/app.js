@@ -11,6 +11,8 @@ import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import { __dirname } from './utils.js';
+import passport from 'passport';
+import './passport/local-strategy.js';
 import 'dotenv/config';
 
 const storeConfig = {
@@ -36,6 +38,9 @@ app.use(session(storeConfig));
 app.engine('handlebars', handlebars.engine());
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'handlebars');
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/products", productRouter);
 app.use("/carts", cartRouter);

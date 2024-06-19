@@ -1,38 +1,35 @@
-import UserDao from "../daos/mongodb/user.dao.js";
-import { UserModel } from "../daos/mongodb/models/user.model.js";
-const userDao = new UserDao(UserModel);
+import * as services from "../services/user.services.js";
 
-export const login = async (req, res) => {
+export const registerResponse = (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    const user = await userDao.login(email, password);
-    if (!user) res.status(401).json({ msg: "Wrong user or password" });
-    else {
-      req.session.email = email;
-      req.session.password = password;
-      res.redirect("/products");
-    }
+    res.json({
+      msg: 'Register OK',
+      session: req.session
+    })
   } catch (error) {
-    throw new Error(error);
+    next(error);
   }
 };
 
-export const register = async (req, res) => {
+export const loginResponse = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    if (email === "adminCoder@coder.com" && password === "adminCod3r123") {
-      const user = await userDao.register({
-        ...req.body,
-        role: "admin",
-      });
-      if (!user) return res.status(401).json({ msg: "User exist!" });
-      else return res.redirect("/login");
-    }
-    const user = await userDao.register(req.body);
-    if (!user) res.status(401).json({ msg: "User exist!" });
-    else res.redirect("/login");
+    let id = null;
+    if(req.session.passport && req.session.passport.user) id = req.session.passport.user;
+    const user = await services.getUserById(id);
+    if(!user) res.status(401).json({ msg: 'Authentication error' });
+    const { first_name, last_name, email, age, role } = user;
+    res.json({
+      msg: 'LOGIN OK!',
+      user: {
+        first_name,
+        last_name,
+        email,
+        age,
+        role
+      }
+    })
   } catch (error) {
-    throw new Error(error);
+    next(error);
   }
 };
 
@@ -53,5 +50,5 @@ export const infoSession = (req, res) => {
 
 export const logout = (req, res) => {
   req.session.destroy();
-  res.send("session destroy");
+  res.send("Session destroyed");
 };
