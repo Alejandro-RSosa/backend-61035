@@ -1,9 +1,8 @@
-import { initMongoDB } from "./daos/mongodb/connection.js";
+import { initMongoDB } from "./daos/db/connection.js";
 import express from "express";
-import router from "./routes/index.js";
+import MainRouter from "./routes/index.js";
 import morgan from "morgan";
 import { errorHandler } from "./middlewares/errorHandler.js";
-import handlebars from 'express-handlebars';
 import MongoStore from "connect-mongo";
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -12,6 +11,8 @@ import passport from 'passport';
 import './passport/local-strategy.js';
 import './passport/google-strategy.js';
 import 'dotenv/config';
+
+const mainRouter = new MainRouter();
 
 const storeConfig = {
     store: MongoStore.create({
@@ -26,26 +27,19 @@ const storeConfig = {
 }
 
 const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev"));
-app.use(cookieParser());
-app.use(session(storeConfig));
-
-app.engine('handlebars', handlebars.engine());
-app.set('views', `${__dirname}/views`);
-app.set('view engine', 'handlebars');
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use('/', router);
-
-app.use(errorHandler);
+app
+    .use(express.json())
+    .use(express.urlencoded({ extended: true }))
+    .use(morgan("dev"))
+    .use(cookieParser())
+    .use(session(storeConfig))
+    .use(passport.initialize())
+    .use(passport.session())    
+    .use('/', mainRouter.getRouter())
+    .use(errorHandler)
 
 initMongoDB();
 
-const PORT = 8080;
+const PORT = process.env.PORT
 
 app.listen(PORT, () => console.log(`Server up on port: ${PORT}`));

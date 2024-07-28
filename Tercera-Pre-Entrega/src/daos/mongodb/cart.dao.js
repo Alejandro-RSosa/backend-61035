@@ -1,35 +1,23 @@
+import MongoDao from "./mongo.dao.js";
 import { CartModel } from "./models/cart.model.js";
 
-export default class CartDaoMongoDB {
+export default class CartDaoMongo extends MongoDao {
+  constructor() {
+    super(CartModel);
+  }
   async create() {
     try {
       return await CartModel.create({
         products: [],
       });
     } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async getAll() {
-    try {
-      return await CartModel.find({});
-    } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
   async getById(id) {
     try {
       return await CartModel.findById(id).populate("products.product");
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async delete(id) {
-    try {
-      return await CartModel.findByIdAndDelete(id);
     } catch (error) {
       console.log(error);
     }
