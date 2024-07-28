@@ -33,6 +33,24 @@ export const loginResponse = async (req, res, next) => {
   }
 };
 
+export const googleResponse = async(req, res, next) => {
+  try {
+    // console.log(req.user);
+    const { first_name, last_name, email, role } = req.user;
+    res.json({
+      msg: 'LOGIN CON GOOGLE OK!',
+      user: {
+        first_name,
+        last_name,
+        email,
+        role
+      }
+    })
+    } catch (error) {
+    next(error)
+  }
+};
+
 export const visit = (req, res) => {
   req.session.info && req.session.info.contador++;
   res.json({
