@@ -1,10 +1,12 @@
 import Services from "./class.services.js";
-import UserDaoMongo from "../daos/mongodb/user.dao.js";
+// import UserDaoMongo from "../daos/mongodb/user.dao.js";
+import persistence from '../daos/persistence.js';
 import jwt from "jsonwebtoken";
 import 'dotenv/config';
 import { createHash, isValidPassword } from "../utils.js";
 
-const userDao = new UserDaoMongo();
+const { userDao } = persistence;
+  // const userDao = new UserDaoMongo();
 
 export default class UserService extends Services {
   constructor() {

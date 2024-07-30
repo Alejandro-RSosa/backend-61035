@@ -1,4 +1,3 @@
-import { initMongoDB } from "./daos/db/connection.js";
 import express from "express";
 import MainRouter from "./routes/index.js";
 import morgan from "morgan";
@@ -37,8 +36,6 @@ app
     .use(passport.session())    
     .use('/', mainRouter.getRouter())
     .use(errorHandler)
-
-initMongoDB();
 
 const PORT = process.env.PORT
 
