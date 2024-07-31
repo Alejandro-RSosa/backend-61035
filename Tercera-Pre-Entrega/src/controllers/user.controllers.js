@@ -12,30 +12,30 @@ export default class UserController extends Controllers{
   register = async(req, res, next) => {
     try {
       const data = await this.service.register(req.body);
+      console.log(data);
       !data ? createResponse(res, 404, data) : createResponse(res, 200, data);
     } catch (error) {
       next(error);
     }
   };
 
-  login = async(req, res, next) => {
+  login = async(req, res, next) =>{
     try {
      const token = await this.service.login(req.body);
-     res.header('Authorization', token);
+      res.cookie('token', token, { httpOnly: true });
      !token ? createResponse(res, 404, token) : createResponse(res, 200, token);
     } catch (error) {
       next(error);
     }
   };
-
-  profile = (req, res, next) => {
+  
+  profile =async(req, res, next)=>{
     try {
      if(req.user){
-      const { first_name, last_name, email, role } = req.user;
-      createResponse(res, 200, {
-        first_name, last_name, email, role
-      })
-     } else createResponse(res, 403, { msg: 'Unhautorized' })
+      const { _id } = req.user;
+      const user = await this.service.getUserById(_id);
+      createResponse(res, 200, user)
+     } else createResponse(res, 401, { msg: 'Unhautorized' })
     } catch (error) {
       next(error);
     }

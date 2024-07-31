@@ -1,12 +1,11 @@
 import Services from "./class.services.js";
-// import UserDaoMongo from "../daos/mongodb/user.dao.js";
-import persistence from '../daos/persistence.js';
+import factory from '../persistence/daos/factory.js';
 import jwt from "jsonwebtoken";
 import 'dotenv/config';
 import { createHash, isValidPassword } from "../utils.js";
 
-const { userDao } = persistence;
-  // const userDao = new UserDaoMongo();
+const { userDao } = factory;
+const { cartDao } = factory;
 
 export default class UserService extends Services {
   constructor() {
@@ -25,17 +24,20 @@ export default class UserService extends Services {
       const { email, password } = user;
       const existUser = await this.dao.getByEmail(email);
       if (!existUser) {
+        const cartUser = await cartDao.create({});
         if (email === process.env.EMAIL_ADMIN && password === process.env.PASS_ADMIN) {
           const newUser = await this.dao.create({
             ...user,
             password: createHash(password),
             role: "admin",
+            cart: cartUser._id,
           });
           return newUser;
         } else {
           const newUser = await this.dao.create({
             ...user,
             password: createHash(password),
+            cart: cartUser._id,
           });
           return newUser;
         }
@@ -58,60 +60,12 @@ export default class UserService extends Services {
       throw new Error(error);
     }
   };
+
+  getUserById = async (id) => {
+    try {
+      return await userRepository.getUserById(id);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }
-
-/*
-export const getUserById = async (id) => {
-  try {
-    return await userDao.getById(id);
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
-export const getUserByEmail = async (email) => {
-  try {
-    return await userDao.getByEmail(email);
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
-export const register = async (user) => {
-  try {
-    const { email, password } = user;
-    const existUser = await getUserByEmail(email);
-    if (!existUser) {
-      if (email === "adminCoder@coder.com" && password === "adminCoder123") {
-        const newUser = await userDao.register({
-          ...user,
-          password: createHash(password),
-          role: "admin",
-        });
-        return newUser;
-      } else {
-        const newUser = await userDao.register({
-          ...user,
-          password: createHash(password),
-        });
-        return newUser;
-      }
-    } else return null;
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-
-export const login = async (user) => {
-  try {
-    const { email, password } = user;
-    const userExist = await getUserByEmail(email);
-    if (!userExist) return null;
-    const passValid = isValidPassword(password, userExist);
-    if (!passValid) return null;
-    return userExist;
-  } catch (error) {
-    throw new Error(error);
-  }
-};
-*/

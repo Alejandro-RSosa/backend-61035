@@ -11,7 +11,7 @@ export default class Services {
       }
     }
   
-    async getById(id) {
+    getById = async(id) => {
       try {
         return await this.dao.getById(id);
       } catch (error) {

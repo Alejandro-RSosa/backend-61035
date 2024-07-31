@@ -9,7 +9,7 @@ router.post('/register', controller.register);
 
 router.post('/login', controller.login);
 
-router.get('/profile', checkAuth, controller.profile);
+router.get('/profile', [checkAuth], controller.profile);
 
 // router.get('/oauth2/redirect/accounts.google.com', passport.authenticate('google', { assignProperty: 'user' }), googleResponse);
 

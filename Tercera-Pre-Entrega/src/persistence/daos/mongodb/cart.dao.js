@@ -23,23 +23,24 @@ export default class CartDaoMongo extends MongoDao {
     }
   }
 
-  async addProdToCart(cartId, prodId, quantity) {
+  async addProdToCart(cartId, prodId) {
     try {
-      const cart = await CartModel.findById(cartId);
-      if (!cart) return null;
-      //Buscar si existe el prod en el carrito
-      const existProdIndex = cart.products.findIndex(p => p.product.toString() === prodId);
-
-      if(existProdIndex !== -1) {
-        //si el prod existe en el carrito
-        cart.products[existProdIndex].quantity = quantity;
-      } else cart.products.push({ product: prodId, quantity });
-
-      await cart.save();
-
-      return cart;
+      const existProdInCart = await this.existProdInCart(cartId, prodId);
+        if(existProdInCart){
+          return await this.model.findOneAndUpdate(
+            { _id: cartId, 'products.product': prodId },
+            { $set: { 'products.$.quantity': existProdInCart.products[0].quantity + 1 } },
+            { new: true }
+          );
+        } else {
+          return await this.model.findByIdAndUpdate(
+            cartId,
+            { $push: { products: { product: prodId } } },
+            { new: true }
+          )
+        }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 

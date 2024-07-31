@@ -1,25 +1,25 @@
 import { Router } from "express";
 import CartController from '../controllers/cart.controllers.js';
+import { checkAuth } from "../middlewares/authJwt.js";
+import { checkAdmin } from "../middlewares/checkAdmin.js";
 const controller = new CartController();
 
 const router = Router();
 
-router.get("/", controller.getAll);
+router.route("/")
+    .get([checkAuth], controller.getAll)
+    .post([checkAuth, checkAdmin], controller.create);
 
-router.get("/:id", controller.getById);
+router.route("/:id")
+    .get([checkAuth], controller.getById)
+    .put([checkAuth, checkAdmin], controller.update)
+    .delete([checkAuth, checkAdmin], controller.delete);
 
-router.post("/", controller.create);
+router.route("/products/:idProd")
+    .post([checkAuth], controller.addProdToCart)
+    .delete([checkAuth], controller.removeProdToCart)
+    .put([checkAuth], controller.updateProdQuantityToCart);
 
-router.put("/:id", controller.update);
-
-router.delete("/:id", controller.delete);
-
-router.post("/:idCart/products/:idProd", controller.addProdToCart);
-
-router.delete("/:idCart/products/:idProd", controller.removeProdToCart);
-
-router.put("/:idCart/products/:idProd", controller.updateProdQuantityToCart);
-
-router.delete("/clear/:idCart", controller.clearCart);
+router.delete("/clear/:idCart", [checkAuth], controller.clearCart);
 
 export default router;

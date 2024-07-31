@@ -7,12 +7,13 @@ export default class CartController extends Controllers{
   constructor(){
     super(cartService)
   }
+
   addProdToCart = async (req, res, next) => {
-    try {
-      const { idCart } = req.params;
+    try {      
+      const { cart } = req.user;
       const { idProd } = req.params;
       const newProdToUserCart = await this.service.addProdToCart(
-        idCart,
+        cart,
         idProd,
       );
       if (!newProdToUserCart) createResponse(res, 404, { msg: "Error adding product to cart" });
@@ -24,14 +25,14 @@ export default class CartController extends Controllers{
 
   removeProdToCart = async (req, res, next) => {
     try {
-      const { idCart } = req.params;
+      const { cart } = req.user;
       const { idProd } = req.params;
       const delProdToUserCart = await this.service.removeProdToCart(
-        idCart,
+        cart,
         idProd,
       );
       if (!delProdToUserCart) createResponse(res, 404, { msg: "cart or prod not exist" });
-      else createResponse(res, 200, {msg: `product ${idProd} deleted to cart`});
+      else createResponse(res, 200, {msg: `product ${idProd} deleted from cart`});
     } catch (error) {
       next(error);
     }
@@ -39,11 +40,11 @@ export default class CartController extends Controllers{
 
   updateProdQuantityToCart = async (req, res, next) => {
     try {
-      const { idCart } = req.params;
+      const { cart } = req.user;
       const { idProd } = req.params;
       const { quantity } = req.body;
       const  updateProdQuantity = await this.service.updateProdQuantityToCart(
-        idCart,
+        cart,
         idProd,
         quantity
       );
@@ -56,9 +57,9 @@ export default class CartController extends Controllers{
 
   clearCart = async (req, res, next) => {
     try {
-      const { idCart } = req.params;
+      const { cart } = req.user;
       const clearCart = await this.service.clearCart(
-        idCart,
+        cart,
       );
       if (!clearCart) createResponse(res, 404, { msg: "Error cleaning cart" });
       else createResponse(res, 200, clearCart);
@@ -66,5 +67,4 @@ export default class CartController extends Controllers{
       next(error);
     }
   };
-
 }

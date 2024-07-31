@@ -7,3 +7,4 @@ CLIENT_SECRET_GOOGLE =
 CALLBACK_URL_GOOGLE = 
 EMAIL_ADMIN = adminCoder@coder.com
 PASS_ADMIN = adminCoder123
+PERSISTENCE = mongo # o fs
