@@ -10,7 +10,8 @@ router.route('/')
     .get([checkAuth], controller.getAll)
     .get([checkAuth], controller.getByCategoryCtr)
     .get([checkAuth], controller.getByStockCtr)
-    .post([checkAuth, checkAdmin], controller.create);
+    .post([checkAuth, checkAdmin], controller.create)
+    .post([checkAuth, checkAdmin], controller.createProductMockCtr);
 router.route('/:id')
     .get([checkAuth], controller.getById)
     .put([checkAuth, checkAdmin], controller.update)

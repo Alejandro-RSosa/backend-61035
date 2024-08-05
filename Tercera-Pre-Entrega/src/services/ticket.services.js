@@ -8,9 +8,6 @@ const ticketDao = new TicketDaoMongo();
 const prodService = new ProductService();
 const cartService = new CartServices();
 
-console.log(prodService);
-console.log(cartService);
-
 export default class TicketService extends Services {
   constructor() {
     super(ticketDao);
@@ -18,18 +15,18 @@ export default class TicketService extends Services {
 
   async generateTicket(user) {
     try {
-      console.log(user);
+      // console.log(user);
       const cart = await cartService.getById(user.cart);
-      console.log('Cart:', cart);
+      // console.log('Cart:', cart);
       if (!cart) return null;
 
       let amountAcc = 0;
       if (cart.products.length > 0) {
         for (const prodInCart of cart.products) {
           const idProd = prodInCart.product;
-          console.log('Product ID:', idProd);
+          // console.log('Product ID:', idProd);
           const prodDB = await prodService.getById(idProd);
-          console.log('Product from DB:', prodDB);
+          // console.log('Product from DB:', prodDB);
 
           if (prodInCart.quantity <= prodDB.stock) {
             const amount = prodInCart.quantity * prodDB.price;
