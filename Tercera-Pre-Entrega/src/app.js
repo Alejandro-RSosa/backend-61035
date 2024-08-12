@@ -10,6 +10,7 @@ import passport from 'passport';
 import './passport/local-strategy.js';
 import './passport/google-strategy.js';
 import 'dotenv/config';
+import logger from './logger.js';
 
 const mainRouter = new MainRouter();
 
@@ -26,6 +27,12 @@ const storeConfig = {
 }
 
 const app = express();
+
+app.use((req, res, next) => {
+    logger.http(`${req.method} ${req.url}`);
+    next();
+  });
+
 app
     .use(express.json())
     .use(express.urlencoded({ extended: true }))
@@ -33,10 +40,13 @@ app
     .use(cookieParser())
     .use(session(storeConfig))
     .use(passport.initialize())
-    .use(passport.session())    
+    .use(passport.session())
     .use('/', mainRouter.getRouter())
     .use(errorHandler)
 
+console.log = (...args) => logger.info(...args);
+console.error = (...args) => logger.error(...args);
+
 const PORT = process.env.PORT
 
-app.listen(PORT, () => console.log(`Server up on port: ${PORT}`));
+app.listen(PORT, () => logger.info(`Server up on port: ${PORT}`));
