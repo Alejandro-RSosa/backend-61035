@@ -2,7 +2,7 @@ import Services from "./class.services.js";
 import factory from "../persistence/daos/factory.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import { createHash, isValidPassword } from "../utils.js";
+import { createHash, isValidPassword, hasBeenMoreThanXTime } from "../utils.js";
 
 const { userDao } = factory;
 const { cartDao } = factory;
@@ -57,7 +57,10 @@ export default class UserService extends Services {
       if (!userExist) return null;
       const passValid = isValidPassword(password, userExist);
       if (!passValid) return null;
-      if (userExist && passValid) return this.generateToken(userExist);
+      if (userExist && passValid) {
+        await this.updateLastConnection(userExist._id);
+        return this.generateToken(userExist);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -70,4 +73,36 @@ export default class UserService extends Services {
       throw new Error(error);
     }
   };
+
+  async updateLastConnection(id) {
+    return await this.update(id, { last_connection: new Date() });
+  }
+
+  async checkUsersLastConnection() {
+    try {
+      const usersInactive = [];
+      const users = await this.dao.getAll();
+      if (users.length > 0) {
+        for (const user of users) {
+          if (
+            user.last_connection &&
+            hasBeenMoreThanXTime(user.last_connection)
+          ) {
+            await this.update(user._id, {
+              active: false,
+            });
+            usersInactive.push(user.email);
+          }
+          else {
+            await this.update(user._id, {
+              active: true,
+            });
+          }
+        }
+      }
+      return usersInactive;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }

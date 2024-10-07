@@ -28,7 +28,7 @@ const UserSchema = new Schema({
     default: "user",
   },
   image: {
-    type: String,    
+    type: String,
   },
   isGoogle: {
     type: Boolean,
@@ -37,8 +37,15 @@ const UserSchema = new Schema({
   cart: {
     type: Schema.Types.ObjectId,
     ref: "carts",
-    default: []
-  }
+    default: [],
+  },
+  last_connection: {
+    type: Date,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 export const UserModel = model(usersCollectionName, UserSchema);

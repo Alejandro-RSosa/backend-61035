@@ -163,6 +163,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Users/User'
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users/NotFound'
+  /users:
+    get:
+      tags:
+      - Users
+      summary: Get all users
+      responses:
+        200:
+          description: List of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users/GetAllUsers'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users/Unauthorized'
   /users/profile:
     get:
       tags:
@@ -175,6 +199,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Users/Profile'
+  /users/delete:
+    put:
+      tags:
+      - Users
+      summary: Delete user
+      responses:
+        200:
+          description: User deleted successfully
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users/Unauthorized'
   /carts:
     get:
       tags:
@@ -363,4 +401,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Carts/InternalServerError'
-            
+  /ticket/purchase:
+    post:
+      tags:
+      - Ticket
+      summary: Purchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/Purchase'
+        required: true
+      responses:
+        200:
+          description: Purchase completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket/Purchase'
+        404:
+          description: Cart not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/NotFound'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/InternalServerError'

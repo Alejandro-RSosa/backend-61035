@@ -108,8 +108,48 @@ components:
           role:
             type: string
             example: "user"
+          last_connection:
+            type: date
+            example: "2021-09-01T00:00:00.000Z"
+          active:
+            type: boolean
+            example: true
           data:
             type: string
+      GetAllUsers:
+        type: array
+        items:
+          properties:
+            first_name:
+              type: string
+              example: "John"
+            last_name:
+              type: string
+              example: "Doe"
+            email:
+              type: string
+              example: "JohnDoe@gmail.com"
+            role:
+              type: string
+              example: "user"
+            active:
+              type: boolean
+              example: true
+            last_connection:
+              type: date
+              example: "2021-09-01T00:00:00.000Z"
+      NotFound:
+        type: object
+        properties:
+          message:
+            type: string
+            example: "User not found"
+      Unauthorized:
+        type: object
+        properties:
+          message:
+            type: string
+            example: "Unauthorized user"
       AlreadyExists:
         type: object
         properties:
@@ -131,6 +171,12 @@ components:
           role:
             type: string
             example: "user"
+          last_connection:
+            type: date
+            example: "2021-09-01T00:00:00.000Z"
+          active:
+            type: boolean
+            example: true
           data:
             type: object
         example:
@@ -230,3 +276,19 @@ components:
           message:
             type: string
             example: "Cart cleared"
+      Purchase:
+        type: object
+        properties:
+          user_id:
+            type: string
+            example: "1"
+          cart_id:
+            type: string
+            example: "1"
+          total_amount:
+            type: number
+            example: 99.90
+            required:
+              - user_id
+              - cart_id
+              - total_amount

@@ -41,6 +41,7 @@ components:
           - email
           - password
           - role
+          - active
         properties:
           first_name:
             type: string
@@ -57,6 +58,12 @@ components:
           role:
             type: string
             example: "user"
+          last_connection:
+            type: date
+            example: "2021-10-10"
+          active:
+            type: boolean
+            example: true
       Login:
         type: object
         required:
@@ -135,4 +142,27 @@ components:
           message:
             type: string
             example: "Cart cleared"
-        
+      Purchase:
+        type: object
+        required:
+          - user_id
+          - cart_id
+          - total_amount
+        properties:
+          user_id:
+            type: string
+            description: ID of the user making the purchase
+          cart_id:
+            type: string
+            description: ID of the cart being purchased
+          total_amount:
+            type: number
+            description: Total amount of the purchase
+          payment_method:
+            type: string
+            description: Method of payment
+            example: "credit_card"
+          shipping_address:
+            type: string
+            description: Address where the order will be shipped
+            example: "123 Main St, Anytown, USA"
