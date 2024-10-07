@@ -11,6 +11,9 @@ import './passport/local-strategy.js';
 import './passport/google-strategy.js';
 import 'dotenv/config';
 import logger from './logger.js';
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import { info } from "./docs/info.js";
 
 const mainRouter = new MainRouter();
 
@@ -28,12 +31,16 @@ const storeConfig = {
 
 const app = express();
 
+const specs = swaggerJSDoc(info);
+
+
 app.use((req, res, next) => {
     logger.http(`${req.method} ${req.url}`);
     next();
   });
 
 app
+    .use('/docs', swaggerUi.serve, swaggerUi.setup(specs))
     .use(express.json())
     .use(express.urlencoded({ extended: true }))
     .use(morgan("dev"))

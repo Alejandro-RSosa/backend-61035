@@ -1,0 +1,366 @@
+paths:
+  /products:
+    post:
+      tags:
+      - Products
+      summary: Create a product
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/Products'
+        required: true
+      responses:
+        200:
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/Product'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/Unauthorized'
+    get:
+      tags:
+      - Products
+      summary: Get all products
+      responses:
+        200:
+          description: List of products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/GetAllProducts'
+  /products/{id}:
+    put:
+      tags:
+      - Products
+      summary: Update a product
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: ID of the product to update
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/UpdateProduct'
+        required: true
+      responses:
+        200:
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/Product'
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/Unauthorized'
+        404:
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/NotFound'
+    delete:
+      tags:
+      - Products
+      summary: Delete a product
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: ID of the product to delete
+      responses:
+        200:
+          description: Product deleted successfully
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/Unauthorized'
+        404:
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/NotFound'
+    get:
+      tags:
+      - Products
+      summary: Get a product by ID
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: ID of the product
+      responses:
+        200:
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/Product'
+        500:
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products/InternalServerError'
+  /users/register:
+    post:
+      tags:
+      - Users
+      summary: Register a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/Register'
+        required: true
+      responses:
+        200:
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users/User'
+        404:
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users/AlreadyExists'
+  /users/login:
+    post:
+      tags:
+      - Users
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/Login'
+        required: true
+      responses:
+        200:
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users/User'
+  /users/profile:
+    get:
+      tags:
+      - Users
+      summary: Get user profile
+      responses:
+        200:
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users/Profile'
+  /carts:
+    get:
+      tags:
+      - Carts
+      summary: Get all carts
+      responses:
+        200:
+          description: List of carts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/GetAllCarts'
+  /carts/{id}:
+    get:
+      tags:
+      - Carts
+      summary: Get a cart by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the cart to retrieve
+        schema:
+          type: string
+      responses:
+        200:
+          description: Cart details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/GetCartById'
+        404:
+          description: Cart not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/NotFound'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/InternalServerError'
+  /carts/products/{id}:
+    post:
+      tags:
+      - Carts
+      summary: Add a product to a cart
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the product to add
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/AddProductToCart'
+        required: true
+      responses:
+        200:
+          description: Product added to cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/AddProductResponse'
+        404:
+          description: Cart or product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/NotFound'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/InternalServerError'
+    delete:
+      tags:
+      - Carts
+      summary: Remove a product from a cart
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID of the product to remove
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/parameters/schemas/RemoveProductFromCart'
+        required: true
+      responses:
+        200:
+          description: Product removed from cart successfully
+        404:
+          description: Cart or product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/NotFound'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/InternalServerError'
+  /carts/{cartId}/products/{productId}:
+    put:
+      tags:
+      - Carts
+      summary: Update product quantity in cart
+      parameters:
+      - name: cartId
+        in: path
+        required: true
+        description: ID of the cart
+        schema:
+          type: string
+      - name: productId
+        in: path
+        required: true
+        description: ID of the product
+        schema:
+          type: string
+      - name: quantity
+        in: path
+        required: true
+        description: Quantity of the product to update
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+          schema:
+            $ref: '#/components/parameters/schemas/UpdateProdQuantityToCart'
+        required: true
+      responses:
+        200:
+          description: Product quantity updated successfully
+          content:
+          application/json:
+            schema:
+            $ref: '#/components/schemas/Carts/UpdateProdQuantityToCart'
+        404:
+          description: Cart or product not found
+          content:
+          application/json:
+            schema:
+            $ref: '#/components/schemas/Carts/NotFound'
+        500:
+          description: Internal server error
+          content:
+          application/json:
+            schema:
+            $ref: '#/components/schemas/Carts/InternalServerError'
+  /carts/clear/{cartId}:
+    delete:
+      tags:
+      - Carts
+      summary: Clear a cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          description: ID of the cart to clear
+          schema:
+            type: string
+      responses:
+        200:
+          description: Cart cleared successfully
+        404:
+          description: Cart not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/NotFound'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Carts/InternalServerError'
+            

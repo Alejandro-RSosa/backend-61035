@@ -50,7 +50,7 @@ export default class CartServices extends Services {
 
   clearCart = async (cartId) => {
     try {
-      const existCart = await getById(cartId);
+      const existCart = await this.getById(cartId);
       console.log("existCart-->", existCart);
       if (!existCart) return null;
       return await this.dao.clearCart(cartId);
