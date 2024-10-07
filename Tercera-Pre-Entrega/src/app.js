@@ -14,6 +14,7 @@ import logger from './logger.js';
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { info } from "./docs/info.js";
+import cors from 'cors';
 
 const mainRouter = new MainRouter();
 
@@ -31,8 +32,18 @@ const storeConfig = {
 
 const app = express();
 
-const specs = swaggerJSDoc(info);
+// Configuración de CORS
+const corsOptions = {
+    origin: 'http://backend.elchuleta.work', // Permite todas las solicitudes (puedes restringir a un dominio específico si lo prefieres)
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Métodos HTTP permitidos
+    // allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+    credentials: true, // Permite el envío de cookies si es necesario
+};
 
+// Aplicar CORS con opciones
+app.use(cors(corsOptions));
+
+const specs = swaggerJSDoc(info);
 
 app.use((req, res, next) => {
     logger.http(`${req.method} ${req.url}`);

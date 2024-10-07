@@ -1,5 +1,7 @@
 FROM node:16-alpine
 
+RUN apk add --no-cache make gcc g++ python3
+
 WORKDIR /usr/src/app
 
 COPY package*.json ./
@@ -10,4 +12,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["node", "app.js"]
+CMD ["node", "src/app.js"]

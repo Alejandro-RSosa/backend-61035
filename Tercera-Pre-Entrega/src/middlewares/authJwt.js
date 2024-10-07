@@ -27,6 +27,7 @@ export const checkAuth = async (req, res, next) => {
       // Generar un nuevo token con un tiempo de expiración renovado
       const newToken = await userService.generateToken(user, "5m");
       console.log(">>>>>>SE REFRESCÓ EL TOKEN");
+      console.log("Nuevo token generado:", newToken);  // Log para verificar si el token se genera
       res.cookie('token', newToken, { httpOnly: true }) // Agregar el nuevo token a la cookie
     }
     req.user = user;
