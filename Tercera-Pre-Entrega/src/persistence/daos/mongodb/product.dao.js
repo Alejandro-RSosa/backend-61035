@@ -22,7 +22,7 @@ export default class ProductDaoMongo extends MongoDao {
     }
   }
 
-  async getAll(page=1, limit=10, category, sort) {
+  async getAll(page=1, limit=20, category, sort) {
     try {
       const filter = category ? { 'category': category } : {};
       let sortOrder = {};

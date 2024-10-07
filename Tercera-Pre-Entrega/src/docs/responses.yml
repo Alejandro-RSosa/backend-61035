@@ -86,7 +86,13 @@ components:
           message:
             type: string
             example: "Product not found"
-      Unhautorized:
+      CannotDuplicateCode:
+        type: object
+        properties:
+          message:
+            type: string
+            example: "Product code already exists"
+      Unauthorized:
         type: object
         properties:
           message:
